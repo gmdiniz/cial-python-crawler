@@ -15,10 +15,9 @@ async def get_async(url):
         return await client.get(url)
 
 
-async def launch(websites_list):
+async def make_request(websites_list):
     response_list = await asyncio.gather(*map(get_async, websites_list))
-    data_list = [response for response in response_list]
-    return data_list
+    return response_list
 
 
 def main():
@@ -30,13 +29,13 @@ def main():
             break
         websites_list.append(website.strip())
     
-    websites_content = asyncio.run(launch(websites_list))
+    websites_content = asyncio.run(make_request(websites_list))
 
     for site_content in websites_content:
         if site_content.status_code  != 200:
             sys.stderr.write(str({'Error code': site_content.status_code})) 
-            return
-        parsed_site = str(BeautifulSoup(site_content, 'html.parser')) 
+            continue
+        parsed_site = BeautifulSoup(site_content, 'html.parser').prettify()
     
         match_url_list = [url[0] for url in re.findall(URL_PATTERN, parsed_site)]
         all_number_found = re.findall(PHONE_NUMBER_PATTERN, parsed_site)
