@@ -35,6 +35,7 @@ def main():
     for site_content in websites_content:
         if site_content.status_code  != 200:
             sys.stderr.write(str({'Error code': site_content.status_code})) 
+            return
         parsed_site = str(BeautifulSoup(site_content, 'html.parser')) 
     
         match_url_list = [url[0] for url in re.findall(URL_PATTERN, parsed_site)]
