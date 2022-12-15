@@ -10,8 +10,8 @@ PHONE_NUMBER_PATTERN = "((?:\+\d{2}[-\.\s]??|\d{4}[-\.\s]??)?(?:\d{3}[-\.\s]??\d
 # Url regex pattern coverage: https://regexr.com/74l5e
 URL_PATTERN = "((?:https?://|www\d{0,3}[.]|[a-z0-9.\-]+[.][a-z]{2,4}/)(?:[^\s()<>\"]+|\(([^\s()<>]+|(\([^\s()<>]+\)))*\))+(?:\(([^\s()<>]+|(\([^\s()<>]+\)))*\)|[^\s`!()\[\]{};:'\".,<>?«»“”‘’]))"
 IMAGE_FORMAT_LIST = ['.tif', '.tiff', '.jpg', '.jpeg', '.gif', '.png', '.eps', '.raw', '.cr2', '.nef', '.orf', '.sr2']
-MIN_NUMBER_LENGHT = 8
-MAX_NUMBER_LENGHT = 11
+MIN_NUMBER_LENGTH = 8
+MAX_NUMBER_LENGTH = 11
 
 
 async def get_async(url):
@@ -30,14 +30,14 @@ async def make_request(websites_list):
 
 def validate_phone_number(number):
     only_digits_number_len = len(re.findall(r'\d+', number)[0])
-    if only_digits_number_len >= MIN_NUMBER_LENGHT and only_digits_number_len <= MAX_NUMBER_LENGHT:
+    if only_digits_number_len >= MIN_NUMBER_LENGTH and only_digits_number_len <= MAX_NUMBER_LENGTH:
         return number
 
 
 def format_phone_number(phone_number):
     char_to_replace = re.findall(r'[^\s\d+\(\)]', phone_number)
-    formated_number = (lambda x: phone_number.replace(x, ' '), char_to_replace) if len(char_to_replace) else phone_number
-    return formated_number
+    formatted_number = (lambda x: phone_number.replace(x, ' '), char_to_replace) if len(char_to_replace) else phone_number
+    return formatted_number
 
 
 def websites_handler(websites_content):
@@ -53,9 +53,9 @@ def websites_handler(websites_content):
 
         all_number_found = re.findall(PHONE_NUMBER_PATTERN, parsed_site)
         match_phone = set(filter(lambda x: validate_phone_number(x), all_number_found))
-        formated_phone_list = [format_phone_number(phone) for phone in match_phone]
+        formatted_phone_list = [format_phone_number(phone) for phone in match_phone]
             
-        website_info.append({ 'logo': list(image_url_list), 'phone': formated_phone_list, 'website': str(site_content.url) })
+        website_info.append({ 'logo': list(image_url_list), 'phone': formatted_phone_list, 'website': str(site_content.url) })
         sys.stdout.write(json.dumps(website_info)+ '\n')
 
 
