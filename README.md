@@ -1,9 +1,6 @@
 # cial_tech_test
 Technical assignment for Cial dun&amp;bradStreet
 
-# How it works
-
-
 # How to launch application
 Check if *docker* is installed in your pc, otherwise follow the official tutorial:
 
@@ -20,3 +17,6 @@ For **linux**: https://docs.docker.com/desktop/install/linux-install/
 - Finally, run:
 
 `docker run -it --name my_app --rm my_image`
+
+
+# How it works
