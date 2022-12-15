@@ -15,4 +15,4 @@ Requisitos:
     - builda uma imagem ready-to-run
     - docker run para rodar tudo
 - Realizar um tratamento dos números de telefone
-    - Tudo que não for um número ou (+) deve ser substituido por um espaço em branco
+    - Tudo que não for um número, '+' ou () deve ser substituido por um espaço em branco

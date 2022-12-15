@@ -15,13 +15,13 @@ MAX_NUMBER_LENGHT = 11
 
 
 async def get_async(url):
-    try:
-        async with httpx.AsyncClient() as client:
+    async with httpx.AsyncClient() as client:
+        try:
             return await client.get(url)
-    except:
-        sys.stderr.write('Request error') 
-        return
-
+        except:
+            sys.stderr.write('Invalid URL')    
+            raise
+    
 
 async def make_request(websites_list):
     response_list = await asyncio.gather(*map(get_async, websites_list))
@@ -34,10 +34,16 @@ def validate_phone_number(number):
         return number
 
 
+def format_phone_number(phone_number):
+    char_to_replace = re.findall(r'[^\s\d+\(\)]', phone_number)
+    formated_number = (lambda x: phone_number.replace(x, ' '), char_to_replace) if len(char_to_replace) else phone_number
+    return formated_number
+
 def main():
     websites_list = []
     website_info = []
 
+    sys.stdout.write("\nInsert one or more valid website URL, double enter to stop the input.\n")
     for website in sys.stdin:
         if '' == website.rstrip():
             break
@@ -57,8 +63,9 @@ def main():
         image_url_list = set([url for url in match_url_list if any(extension in url for extension in IMAGE_FORMAT_LIST)])
 
         match_phone = set(filter(lambda x: validate_phone_number(x), all_number_found))
+        formated_phone_list = [format_phone_number(phone) for phone in match_phone]
             
-        website_info.append({ 'logo': list(image_url_list), 'phone': list(match_phone), 'website': str(site_content.url) })
+        website_info.append({ 'logo': list(image_url_list), 'phone': formated_phone_list, 'website': str(site_content.url) })
         sys.stdout.write(json.dumps(website_info)+ '\n')
 
 

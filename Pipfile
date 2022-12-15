@@ -9,6 +9,7 @@ requests = "*"
 lxml = "*"
 httpx = "*"
 asyncio = "*"
+werkzeug = "*"
 
 [dev-packages]
 
