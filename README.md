@@ -1,5 +1,4 @@
-# cial_tech_test
-Technical assignment for Cial dun&amp;bradStreet
+# Technical assignment for Cial dun&amp;bradStreet
 
 # How to launch application
 Check if *docker* is installed in your pc, otherwise follow the official tutorial:
