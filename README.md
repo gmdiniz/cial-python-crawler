@@ -5,8 +5,10 @@ Technical assignment for Cial dun&amp;bradStreet
 
 
 # How to launch application
-- Check if *docker* is installed in your pc, otherwise follow the official tutorial:
+Check if *docker* is installed in your pc, otherwise follow the official tutorial:
+
 For **windows**: https://docs.docker.com/desktop/install/windows-install/
+
 For **linux**: https://docs.docker.com/desktop/install/linux-install/
 
 - Now, assuming docker is installed, run:
