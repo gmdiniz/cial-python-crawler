@@ -17,7 +17,7 @@ For **linux**: https://docs.docker.com/desktop/install/linux-install/
 
 `docker run -it --name my_app --rm my_image`
 
-and insert the website(d) valid URL
+and insert the website(s) valid URL
 
 
 ## How it works
