@@ -17,6 +17,8 @@ For **linux**: https://docs.docker.com/desktop/install/linux-install/
 
 `docker run -it --name my_app --rm my_image`
 
+and insert the website(d) valid URL
+
 
 ## How it works
 The algorithm in main.py can be separated into 3 main parts:
