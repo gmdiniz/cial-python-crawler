@@ -19,3 +19,10 @@ For **linux**: https://docs.docker.com/desktop/install/linux-install/
 
 
 ## How it works
+The algorithm in main.py can be separated into 3 main parts:
+- Input reading
+    - The cli application running inside a docker image receives the websites URL list by the bash and pass to make_request() method, that will create a assync requests routine using asyncio and httpx lib, and finally pass the list of the requests response to websites_handler() method.
+- Website handler method
+    - Basically receives the response list, get the content of the websites, parse using the BeautifulSoup lib and returns a lxml object contains the whole site. After that, with the parsed site, the app uses a regular expression pattern to find all occurrences of image URLs in each site, and do the same with the internacional phone numbers. All phone numbers in the found list are passed to a formatter method, following the criterias and returning formatted numbers.
+- Output writing 
+    - The app uses the handler output to print, a formatted object using standart output in console.

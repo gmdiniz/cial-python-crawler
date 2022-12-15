@@ -39,9 +39,28 @@ def format_phone_number(phone_number):
     formated_number = (lambda x: phone_number.replace(x, ' '), char_to_replace) if len(char_to_replace) else phone_number
     return formated_number
 
+
+def websites_handler(websites_content):
+    website_info = []
+    for site_content in websites_content:
+        if site_content.status_code != 200:
+            sys.stderr.write('DeadPage\n') 
+            continue
+        parsed_site = BeautifulSoup(site_content, 'html.parser').prettify()
+
+        match_url_list = [url[0] for url in re.findall(URL_PATTERN, parsed_site)]
+        image_url_list = set([url for url in match_url_list if any(extension in url for extension in IMAGE_FORMAT_LIST)])
+
+        all_number_found = re.findall(PHONE_NUMBER_PATTERN, parsed_site)
+        match_phone = set(filter(lambda x: validate_phone_number(x), all_number_found))
+        formated_phone_list = [format_phone_number(phone) for phone in match_phone]
+            
+        website_info.append({ 'logo': list(image_url_list), 'phone': formated_phone_list, 'website': str(site_content.url) })
+        sys.stdout.write(json.dumps(website_info)+ '\n')
+
+
 def main():
     websites_list = []
-    website_info = []
 
     sys.stdout.write("\nInsert one or more valid website URL, double enter to stop the input.\n")
     for website in sys.stdin:
@@ -50,23 +69,7 @@ def main():
         websites_list.append(website.strip())
     
     websites_content = asyncio.run(make_request(websites_list))
-
-    for site_content in websites_content:
-        if site_content.status_code != 200:
-            sys.stderr.write('DeadPage\n') 
-            continue
-        parsed_site = BeautifulSoup(site_content, 'html.parser').prettify()
-    
-        match_url_list = [url[0] for url in re.findall(URL_PATTERN, parsed_site)]
-        all_number_found = re.findall(PHONE_NUMBER_PATTERN, parsed_site)
-
-        image_url_list = set([url for url in match_url_list if any(extension in url for extension in IMAGE_FORMAT_LIST)])
-
-        match_phone = set(filter(lambda x: validate_phone_number(x), all_number_found))
-        formated_phone_list = [format_phone_number(phone) for phone in match_phone]
-            
-        website_info.append({ 'logo': list(image_url_list), 'phone': formated_phone_list, 'website': str(site_content.url) })
-        sys.stdout.write(json.dumps(website_info)+ '\n')
+    websites_handler(websites_content)
 
 
 if __name__ == '__main__':
